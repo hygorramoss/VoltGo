@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VoltGo Motos Elétricas | Ande mais, gaste menos</title>
+<meta name="description" content="VoltGo Motos Elétricas: modelos urbanos, para entrega e premium. Simule sua economia, encontre a moto ideal e fale direto no WhatsApp.">
+<meta name="theme-color" content="#050607">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kanit:ital,wght@1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050607;--bg2:#0a0c0d;--card:#0e1112;--line:rgba(255,255,255,.08);--g:#39ff14;--g2:#b6ff3b;--txt:#f4f6f5;--mut:#98a39e;--r:18px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+h1,h2,h3,.display{font-family:Kanit,Inter,sans-serif;font-style:italic;font-weight:800;line-height:1.05;letter-spacing:-.01em}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+img,svg{display:block;max-width:100%}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.g{color:var(--g)}
+section{position:relative;padding:84px 0;z-index:1}
+.eyebrow{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--g);margin-bottom:12px}
+.sec-h{max-width:640px;margin-bottom:38px}
+.sec-h h2{font-size:clamp(1.9rem,4.4vw,3rem)}
+.sec-h p{color:var(--mut);margin-top:12px}
+
+/* progress, glow, loader */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--g2),var(--g));z-index:120;box-shadow:0 0 12px var(--g)}
+#glow{position:fixed;width:460px;height:460px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(57,255,20,.09),transparent 65%);transform:translate(-50%,-50%);z-index:0;left:-999px;top:-999px}
+#loader{position:fixed;inset:0;background:var(--bg);z-index:200;display:grid;place-items:center;transition:opacity .5s,visibility .5s;animation:ldOut .5s 2s forwards}
+#loader.hide{opacity:0;visibility:hidden}
+#loader svg{width:92px;height:92px;animation:pulse 1s ease-in-out infinite}
+@keyframes ldOut{to{opacity:0;visibility:hidden}}
+@keyframes pulse{50%{transform:scale(1.12);filter:drop-shadow(0 0 18px var(--g))}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:999px;font-weight:700;font-size:.95rem;transition:transform .2s,box-shadow .2s,background .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn.sm{padding:10px 18px;font-size:.88rem}
+.btn-g{background:linear-gradient(135deg,var(--g2),var(--g));color:#04140a;box-shadow:0 0 0 rgba(57,255,20,0)}
+.btn-g:hover{box-shadow:0 8px 30px rgba(57,255,20,.35)}
+.btn-o{border:1.5px solid rgba(255,255,255,.22);color:var(--txt)}
+.btn-o:hover{border-color:var(--g);color:var(--g)}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:90;transition:background .3s,box-shadow .3s}
+.hdr.scrolled{background:rgba(5,6,7,.82);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+.hdr .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo svg{width:40px;height:40px}
+.logo b{font-family:Kanit,sans-serif;font-style:italic;font-weight:900;font-size:1.55rem;letter-spacing:-.01em}
+.logo b i{font-style:inherit;color:var(--g)}
+.nav{display:flex;gap:26px;font-size:.92rem;font-weight:500;color:#cfd6d2}
+.nav a{position:relative;padding:4px 0;transition:color .2s}
+.nav a:hover{color:var(--g)}
+.hdr-r{display:flex;align-items:center;gap:10px}
+.fav-btn{position:relative;width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(255,255,255,.18);display:grid;place-items:center;font-size:1.05rem;transition:.2s}
+.fav-btn:hover{border-color:var(--g);color:var(--g)}
+.fav-btn em{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--g);color:#04140a;font-size:.7rem;font-weight:800;font-style:normal;display:none;place-items:center;padding:0 4px}
+.fav-btn em.show{display:grid}
+#burger{display:none;width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(255,255,255,.18);font-size:1.2rem}
+
+/* hero */
+.hero{padding:40px 0 70px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;min-height:calc(100vh - 150px)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(57,255,20,.35);background:rgba(57,255,20,.07);border-radius:999px;font-size:.8rem;font-weight:600;color:var(--g2);margin-bottom:20px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g);animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.25}}
+.hero h1{font-size:clamp(2.5rem,6.2vw,4.8rem);margin-bottom:18px}
+.hero h1 span{background:linear-gradient(135deg,var(--g2),var(--g));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{color:var(--mut);font-size:1.08rem;max-width:500px;margin-bottom:28px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap}
+.hero-stats div b{display:block;font-family:Kanit,sans-serif;font-style:italic;font-size:1.7rem;font-weight:800;color:var(--g)}
+.hero-stats div span{font-size:.8rem;color:var(--mut)}
+.stage{position:relative;aspect-ratio:1/1;width:100%;max-width:560px;margin:0 auto;display:grid;place-items:center}
+.stage:before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(57,255,20,.16),transparent 68%)}
+.ring{position:absolute;inset:6%;border-radius:50%;border:2px solid rgba(57,255,20,.4);border-top-color:transparent;border-left-color:transparent;animation:rspin 14s linear infinite;box-shadow:0 0 50px rgba(57,255,20,.12)}
+.ring.r2{inset:14%;animation-duration:22s;animation-direction:reverse;border-color:rgba(182,255,59,.25);border-bottom-color:transparent}
+@keyframes rspin{to{transform:rotate(360deg)}}
+#heroSvg{width:94%;position:relative;z-index:2;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 22px 28px rgba(57,255,20,.16))}
+@keyframes float{50%{transform:translateY(-10px)}}
+.lines{position:absolute;inset:0;z-index:1;pointer-events:none}
+.lines i{position:absolute;left:0;height:2px;width:34%;background:linear-gradient(90deg,transparent,var(--g));opacity:0}
+.lines i:nth-child(1){top:52%}.lines i:nth-child(2){top:60%;width:26%;animation-delay:.2s!important}.lines i:nth-child(3){top:68%;animation-delay:.4s!important}.lines i:nth-child(4){top:44%;width:20%;animation-delay:.1s!important}
+.stage.on .lines i{animation:streak .65s linear infinite}
+@keyframes streak{0%{transform:translateX(160%);opacity:0}30%{opacity:1}100%{transform:translateX(-60%);opacity:0}}
+.speedo{position:absolute;top:6%;right:4%;z-index:3;background:rgba(10,12,13,.8);border:1px solid var(--line);border-radius:14px;padding:10px 16px;text-align:center;backdrop-filter:blur(8px)}
+.speedo b{font-family:Kanit,sans-serif;font-style:italic;font-size:2rem;font-weight:800;color:var(--g);display:block;line-height:1}
+.speedo small{font-size:.7rem;color:var(--mut);letter-spacing:.1em}
+.stage-ctl{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:14px;background:rgba(10,12,13,.85);border:1px solid var(--line);padding:8px 10px 8px 16px;border-radius:999px;backdrop-filter:blur(8px)}
+.dots{display:flex;gap:7px}
+.dot{width:20px;height:20px;border-radius:50%;background:var(--c);border:2px solid rgba(255,255,255,.2);transition:.2s}
+.dot.on,.dot:hover{border-color:var(--g);transform:scale(1.15)}
+.power{padding:9px 16px;font-size:.85rem}
+
+/* bike svg */
+.wheel{transform-box:fill-box;transform-origin:center}
+.stage.on .wheel,.card:hover .wheel,.d-stage:hover .wheel,.q-res:hover .wheel{animation:spin .55s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.beam{opacity:0;transition:opacity .4s}
+.stage.on .beam,.d-stage:hover .beam,.card:hover .beam{opacity:1}
+
+/* ticker */
+.ticker{overflow:hidden;border-block:1px solid var(--line);background:var(--bg2);padding:16px 0;z-index:1;position:relative}
+.ticker div{display:flex;gap:46px;width:max-content;animation:tick 28s linear infinite;font-family:Kanit,sans-serif;font-style:italic;font-weight:800;font-size:1.15rem;letter-spacing:.04em;color:#e8ece9;white-space:nowrap}
+.ticker span:nth-child(even){color:var(--g)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* catalog */
+.tools{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;margin-bottom:26px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,.14);font-size:.88rem;font-weight:600;color:#cfd6d2;transition:.2s}
+.chip:hover{border-color:var(--g);color:var(--g)}
+.chip.on{background:var(--g);border-color:var(--g);color:#04140a}
+select,input[type=text],input[type=tel]{background:var(--card);color:var(--txt);border:1.5px solid rgba(255,255,255,.14);border-radius:12px;padding:11px 14px;font:inherit;font-size:.92rem;outline:none;transition:border-color .2s}
+select:focus,input:focus{border-color:var(--g)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,285px),1fr));gap:22px}
+.card{--mx:50%;--my:50%;position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:transform .25s ease,border-color .25s,box-shadow .25s;animation:pop .5s both;will-change:transform}
+.card:before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx) var(--my),rgba(57,255,20,.12),transparent 70%);opacity:0;transition:opacity .25s;pointer-events:none}
+.card:hover{border-color:rgba(57,255,20,.45);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 40px rgba(57,255,20,.07)}
+.card:hover:before{opacity:1}
+@keyframes pop{from{opacity:0;transform:translateY(22px) scale(.97)}}
+.c-top{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;z-index:2}
+.badge{display:inline-block;padding:5px 12px;border-radius:999px;background:rgba(57,255,20,.12);border:1px solid rgba(57,255,20,.35);color:var(--g2);font-size:.72rem;font-weight:700;letter-spacing:.04em}
+.fav{width:34px;height:34px;border-radius:50%;background:rgba(5,6,7,.7);border:1px solid var(--line);color:#6f7a75;font-size:1rem;transition:.2s}
+.fav:hover{color:#ff4d6d;transform:scale(1.1)}
+.fav.on{color:#ff4d6d;border-color:rgba(255,77,109,.5)}
+.c-img{padding:44px 14px 6px;cursor:pointer;background:radial-gradient(circle at 50% 70%,rgba(57,255,20,.08),transparent 65%)}
+.c-body{padding:6px 20px 20px}
+.cat{font-size:.74rem;color:var(--mut);letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.c-body h3{font-size:1.45rem;margin:4px 0 6px}
+.desc{color:var(--mut);font-size:.88rem;min-height:3.9em}
+.mini{display:flex;gap:8px;list-style:none;margin:14px 0}
+.mini li{flex:1;text-align:center;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:8px 4px;font-size:.72rem;color:var(--mut)}
+.mini li b{display:block;font-family:Kanit,sans-serif;font-style:italic;font-size:1.1rem;color:var(--txt)}
+.c-price small{display:block;font-size:.72rem;color:var(--mut)}
+.c-price strong{font-family:Kanit,sans-serif;font-style:italic;font-size:1.75rem;color:var(--g)}
+.c-actions{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:10px}
+.cmp{display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--mut);cursor:pointer}
+.cmp input{accent-color:var(--g);width:17px;height:17px}
+.note{margin-top:22px;font-size:.8rem;color:#6f7a75}
+
+.c-sw{display:flex;align-items:center;gap:9px;padding:2px 20px 8px;position:relative;z-index:2}
+.c-sw .sw{width:26px;height:26px;border-width:2px;flex:none}
+.c-cn{font-size:.74rem;color:var(--mut);margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-img{padding-bottom:0}
+/* simulator */
+.sim{background:linear-gradient(180deg,transparent,rgba(57,255,20,.04),transparent)}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px}
+.fld{margin-bottom:20px}
+.fld label{display:flex;justify-content:space-between;font-size:.88rem;color:#cfd6d2;margin-bottom:8px;font-weight:500}
+.fld label b{color:var(--g)}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:rgba(255,255,255,.12);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--g);box-shadow:0 0 14px rgba(57,255,20,.7);cursor:pointer;border:3px solid #04140a}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--g);border:3px solid #04140a;cursor:pointer}
+.cmpbar{margin:16px 0}
+.cmpbar div{display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:6px;color:#cfd6d2}
+.cmpbar div b{font-family:Kanit,sans-serif;font-style:italic;font-size:1.25rem}
+.track{height:12px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden}
+.track i{display:block;height:100%;width:0;border-radius:6px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.t-gas{background:linear-gradient(90deg,#ff8a3d,#ff4d4d)}
+.t-ele{background:linear-gradient(90deg,var(--g2),var(--g))}
+.big-eco{margin-top:24px;padding:22px;border-radius:16px;background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.3);text-align:center}
+.big-eco small{color:var(--mut);font-size:.82rem}
+.big-eco strong{display:block;font-family:Kanit,sans-serif;font-style:italic;font-size:clamp(2rem,5vw,3rem);color:var(--g);line-height:1.1}
+.big-eco p{font-size:.88rem;color:#cfd6d2;margin:6px 0 14px}
+
+/* quiz */
+.q-box{min-height:380px;display:flex;flex-direction:column}
+.q-prog{display:flex;gap:6px;margin-bottom:22px}
+.q-prog i{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.1);transition:.3s}
+.q-prog i.on{background:var(--g);box-shadow:0 0 10px rgba(57,255,20,.5)}
+.q-box h3{font-size:1.55rem;margin-bottom:18px}
+.q-opts{display:grid;gap:10px}
+.q-opt{text-align:left;padding:16px 18px;border-radius:14px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);font-weight:600;transition:.2s}
+.q-opt:hover{border-color:var(--g);background:rgba(57,255,20,.07);transform:translateX(5px)}
+.q-res{text-align:center;animation:pop .5s both}
+.q-res svg{max-width:300px;margin:0 auto}
+.q-res h3{font-size:1.8rem;margin:6px 0}
+.q-res p{color:var(--mut);margin-bottom:16px}
+.q-res .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.link{color:var(--mut);font-size:.85rem;text-decoration:underline;margin-top:14px;align-self:flex-start}
+.link:hover{color:var(--g)}
+
+/* benefits & steps */
+.ben{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:18px}
+.ben .b{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:transform .25s,border-color .25s}
+.ben .b:hover{border-color:rgba(57,255,20,.4);transform:translateY(-6px)}
+.ben .ic{width:50px;height:50px;border-radius:14px;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);display:grid;place-items:center;font-size:1.4rem;margin-bottom:16px}
+.ben h3{font-size:1.2rem;margin-bottom:6px}
+.ben p{color:var(--mut);font-size:.9rem}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+.step{position:relative;padding:28px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);counter-increment:s}
+.step:before{content:"0" counter(s);font-family:Kanit,sans-serif;font-style:italic;font-weight:900;font-size:3.2rem;color:rgba(57,255,20,.18);position:absolute;top:10px;right:20px;line-height:1}
+.step h3{font-size:1.25rem;margin-bottom:6px}
+.step p{color:var(--mut);font-size:.9rem}
+
+/* faq */
+.faq{max-width:780px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;transition:border-color .2s}
+details[open]{border-color:rgba(57,255,20,.4)}
+summary{list-style:none;cursor:pointer;padding:18px 22px;font-weight:600;display:flex;justify-content:space-between;gap:12px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:1.5rem;color:var(--g);transition:transform .25s;line-height:1}
+details[open] summary:after{transform:rotate(45deg)}
+details p{padding:0 22px 20px;color:var(--mut);font-size:.93rem}
+
+/* lead */
+.lead-box{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;padding:44px;border-radius:26px;background:linear-gradient(135deg,rgba(57,255,20,.12),rgba(57,255,20,.02));border:1px solid rgba(57,255,20,.3)}
+.lead-box h2{font-size:clamp(1.8rem,4vw,2.7rem);margin-bottom:10px}
+.lead-box p{color:#cfd6d2}
+form{display:grid;gap:12px}
+form input,form select{width:100%}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:44px 0 90px;background:var(--bg2);position:relative;z-index:1}
+.f-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.f-grid p,.f-grid a{color:var(--mut);font-size:.88rem}
+.f-grid a:hover{color:var(--g)}
+.f-col{display:grid;gap:6px;align-content:start}
+.legal{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);font-size:.76rem;color:#6f7a75}
+
+/* floating */
+.wa-float{position:fixed;right:20px;bottom:22px;z-index:80;display:flex;align-items:center;gap:10px}
+.wa-float span{background:#fff;color:#04140a;font-weight:700;font-size:.82rem;padding:8px 14px;border-radius:999px;opacity:0;transform:translateX(10px);transition:.4s;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.wa-float.tip span{opacity:1;transform:none}
+.wa-float a{width:60px;height:60px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 8px 28px rgba(37,211,102,.5);animation:wapulse 2.2s infinite}
+.wa-float a svg{width:32px;height:32px}
+@keyframes wapulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.55)}70%{box-shadow:0 0 0 18px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+.tray{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);z-index:85;display:flex;align-items:center;gap:14px;background:rgba(14,17,18,.95);border:1px solid rgba(57,255,20,.4);padding:10px 12px 10px 20px;border-radius:999px;backdrop-filter:blur(10px);transition:transform .35s cubic-bezier(.2,.9,.3,1.2);box-shadow:0 12px 40px rgba(0,0,0,.6);font-size:.9rem;max-width:calc(100vw - 100px)}
+.tray.show{transform:translate(-50%,0)}
+.tray button.x{color:var(--mut);font-size:.82rem;text-decoration:underline}
+#toast{position:fixed;top:84px;left:50%;transform:translate(-50%,-30px);background:#101314;border:1px solid rgba(57,255,20,.5);color:var(--txt);padding:12px 20px;border-radius:12px;z-index:150;opacity:0;pointer-events:none;transition:.35s;font-size:.9rem;box-shadow:0 10px 30px rgba(0,0,0,.5);max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex}
+.m-back{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.m-box{position:relative;background:var(--bg2);border:1px solid rgba(57,255,20,.3);border-radius:24px;max-width:980px;width:100%;max-height:92vh;overflow:auto;padding:34px;animation:pop .35s both;box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.m-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);z-index:3}
+.m-x:hover{border-color:var(--g);color:var(--g)}
+.d-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.d-stage{position:relative;padding:10px;border-radius:20px;background:radial-gradient(circle at 50% 60%,rgba(57,255,20,.14),transparent 70%)}
+.swatches{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.sw{width:30px;height:30px;border-radius:50%;background:var(--c);border:3px solid rgba(255,255,255,.2);transition:.2s}
+.sw:hover{transform:scale(1.12)}
+.sw.on{border-color:var(--g);box-shadow:0 0 14px rgba(57,255,20,.6)}
+.cor-nome{text-align:center;font-size:.85rem;color:var(--mut);margin-top:8px}
+.d-right h2{font-size:2.2rem;margin:10px 0 4px}
+.d-price small{display:block;font-size:.75rem;color:var(--mut)}
+.d-price strong{font-family:Kanit,sans-serif;font-style:italic;font-size:2.2rem;color:var(--g)}
+.d-right>p{color:var(--mut);margin:10px 0 18px;font-size:.93rem}
+.bar{display:grid;grid-template-columns:90px 1fr 82px;gap:10px;align-items:center;font-size:.82rem;margin-bottom:9px;color:#cfd6d2}
+.bar>div{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g2),var(--g));border-radius:4px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bar b{text-align:right}
+.spec{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.spec div{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.spec dt{font-size:.7rem;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+.spec dd{font-weight:600;font-size:.9rem}
+.d-cta{display:flex;gap:10px;flex-wrap:wrap}
+.list-item{display:grid;grid-template-columns:110px 1fr auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--card)}
+.list-item h4{font-family:Kanit,sans-serif;font-style:italic;font-size:1.1rem}
+.list-item small{color:var(--mut)}
+.m-title{font-size:1.9rem;margin-bottom:18px}
+.empty{color:var(--mut);text-align:center;padding:30px 0}
+.cmp-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{padding:12px 10px;text-align:center;border-bottom:1px solid var(--line);font-size:.9rem}
+th:first-child,td:first-child{text-align:left;color:var(--mut);font-size:.82rem}
+td.best{color:var(--g);font-weight:700}
+th svg{max-width:150px;margin:0 auto}
+th h4{font-family:Kanit,sans-serif;font-style:italic;font-size:1rem}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:900px){
+ .nav{position:fixed;top:70px;left:0;right:0;flex-direction:column;gap:0;background:rgba(5,6,7,.97);backdrop-filter:blur(14px);padding:8px 20px 18px;border-bottom:1px solid var(--line);transform:translateY(-130%);transition:transform .3s;z-index:-1}
+ .nav.open{transform:none}
+ .nav a{padding:14px 0;border-bottom:1px solid var(--line)}
+ #burger{display:block}
+ .hdr-r .btn{display:none}
+ .hero .wrap,.sim-grid,.lead-box,.d-grid{grid-template-columns:1fr}
+ .hero .wrap{min-height:0}
+ .steps{grid-template-columns:1fr}
+ section{padding:62px 0}
+ .lead-box{padding:28px}
+ .m-box{padding:26px 18px}
+ .list-item{grid-template-columns:80px 1fr}
+ .list-item .btn{grid-column:1/-1}
+ .wa-float span{display:none}
+}
+@media(max-width:600px){
+ html{scroll-padding-top:64px}
+ .wrap{padding:0 16px}
+ section{padding:52px 0}
+ .hdr .wrap{height:62px}
+ .nav{top:62px}
+ .logo svg{width:34px;height:34px}
+ .logo b{font-size:1.35rem}
+ .hero{padding:18px 0 48px}
+ .pill{font-size:.74rem;margin-bottom:14px}
+ .hero h1{font-size:clamp(2.1rem,10.5vw,2.8rem);margin-bottom:14px}
+ .hero p.lead{font-size:.97rem;margin-bottom:22px}
+ .hero .cta{gap:10px;margin-bottom:26px}
+ .hero .cta .btn{flex:1 1 100%}
+ .hero-stats{gap:10px 20px}
+ .hero-stats div b{font-size:1.35rem}
+ .stage{max-width:380px}
+ .speedo{top:2%;right:0;padding:7px 12px}
+ .speedo b{font-size:1.5rem}
+ .stage-ctl{bottom:-4%;gap:8px;padding:6px 6px 6px 12px;width:calc(100% - 8px);justify-content:space-between}
+ .dots{gap:6px}
+ .dot{width:22px;height:22px}
+ .power{padding:9px 13px;font-size:.8rem}
+ .ticker div{font-size:.95rem;gap:30px}
+ .sec-h{margin-bottom:26px}
+ .tools{flex-direction:column;align-items:stretch;gap:12px}
+ .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .chips::-webkit-scrollbar{display:none}
+ .chip{flex:none}
+ #sort{width:100%}
+ select,input[type=text],input[type=tel]{font-size:16px}
+ .grid{gap:16px}
+ .c-body{padding:6px 16px 18px}
+ .c-sw{padding:2px 16px 8px}
+ .c-actions{flex-wrap:wrap}
+ .panel{padding:20px 16px;border-radius:18px}
+ .sim-grid{gap:16px}
+ .q-box{min-height:0}
+ .q-box h3{font-size:1.3rem}
+ .q-opt{padding:14px 16px}
+ .ben .b,.step{padding:22px}
+ summary{padding:15px 16px;font-size:.95rem}
+ details p{padding:0 16px 16px}
+ .lead-box{padding:24px 18px;border-radius:20px;gap:22px}
+ footer{padding:36px 0 110px}
+ .f-grid{gap:22px}
+ .wa-float{right:14px;bottom:16px}
+ .wa-float a{width:54px;height:54px}
+ .tray{left:14px;right:84px;bottom:20px;max-width:none;transform:translate(0,170%);padding:8px 10px 8px 16px;gap:10px;font-size:.82rem;justify-content:space-between}
+ .tray.show{transform:none}
+ #toast{top:72px;font-size:.84rem;width:calc(100vw - 32px)}
+ .modal{padding:10px;align-items:flex-end}
+ .m-box{padding:48px 16px 22px;border-radius:20px;max-height:92vh}
+ .m-x{top:10px;right:10px}
+ .m-title{font-size:1.5rem;padding-right:34px}
+ .d-grid{gap:18px}
+ .d-right h2{font-size:1.7rem}
+ .d-price strong{font-size:1.8rem}
+ .bar{grid-template-columns:74px 1fr 66px;font-size:.76rem}
+ .spec{grid-template-columns:1fr 1fr;gap:6px}
+ .spec div{padding:8px 10px}
+ .d-cta .btn{flex:1 1 100%}
+ .swatches{gap:12px}
+ .sw{width:34px;height:34px}
+ .c-sw .sw{width:30px;height:30px}
+ table{min-width:520px}
+ th svg{max-width:110px}
+}
+@media(max-width:380px){
+ .hero h1{font-size:2rem}
+ .mini li{font-size:.68rem}
+ .mini li b{font-size:1rem}
+ .power span{display:none}
+ .stage-ctl{padding-left:10px}
+}
+@media(hover:none){
+ .btn:hover{transform:none}
+ .card:hover{box-shadow:none}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="glow"></div>
+<div id="loader" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><linearGradient id="lg0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b6ff3b"/><stop offset="1" stop-color="#00ff1a"/></linearGradient></defs><path d="M62 4 22 56h24l-8 40 42-56H55z" fill="url(#lg0)"/></svg></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<header class="hdr" id="hdr">
+ <div class="wrap">
+  <a href="#topo" class="logo" id="logoTop" aria-label="VoltGo Motos Elétricas"></a>
+  <nav class="nav" id="nav">
+   <a href="#motos">Motos</a>
+   <a href="#simulador">Simulador</a>
+   <a href="#quiz">Qual é a minha?</a>
+   <a href="#vantagens">Vantagens</a>
+   <a href="#faq">Dúvidas</a>
+  </nav>
+  <div class="hdr-r">
+   <button class="fav-btn" id="favBtn" aria-label="Meus favoritos">♥<em id="favCount">0</em></button>
+   <a class="btn btn-g sm" id="waHeader" target="_blank" rel="noopener" href="#">Falar no WhatsApp</a>
+   <button id="burger" aria-label="Abrir menu">☰</button>
+  </div>
+ </div>
+</header>
+
+<main id="topo">
+<section class="hero">
+ <div class="wrap">
+  <div>
+   <div class="pill"><i></i> Mobilidade elétrica • Zero gasolina</div>
+   <h1>Ligou, <span>andou.</span><br>Sem gastar com gasolina.</h1>
+   <p class="lead">Motos elétricas para o seu dia a dia, para trabalhar com entregas ou para pilotar com estilo. Escolha o modelo, simule sua economia e fale direto com a gente.</p>
+   <div class="cta">
+    <a href="#motos" class="btn btn-g">Ver as motos ⚡</a>
+    <a href="#simulador" class="btn btn-o">Simular minha economia</a>
+   </div>
+   <div class="hero-stats">
+    <div><b>R$ 0</b><span>de gasolina</span></div>
+    <div><b>0</b><span>troca de óleo</span></div>
+    <div><b>110/220V</b><span>recarga em tomada</span></div>
+   </div>
+  </div>
+  <div class="stage" id="stage">
+   <div class="ring"></div><div class="ring r2"></div>
+   <div class="lines"><i></i><i></i><i></i><i></i></div>
+   <div class="speedo"><b id="speed">0</b><small>KM/H</small></div>
+   <div id="heroSvg"></div>
+   <div class="stage-ctl">
+    <div class="dots" id="heroDots"></div>
+    <button class="btn btn-g power" id="power">⚡ <span>Ligar a moto</span></button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+
+<section id="motos">
+ <div class="wrap">
+  <div class="sec-h reveal"><span class="eyebrow">Catálogo</span><h2>Escolha a sua <span class="g">VoltGo</span></h2><p>Passe o mouse (ou toque) nas motos, mude a cor, favorite e compare até 3 modelos lado a lado.</p></div>
+  <div class="tools reveal">
+   <div class="chips" id="chips"></div>
+   <select id="sort" aria-label="Ordenar"><option value="rel">Ordenar: destaque</option><option value="menor">Menor preço</option><option value="maior">Maior preço</option></select>
+  </div>
+  <div class="grid" id="grid"></div>
+  <p class="note">* Imagens ilustrativas. Valores e especificações de referência, sujeitos a alteração e disponibilidade. Confirme tudo no atendimento.</p>
+ </div>
+</section>
+
+<section class="sim" id="simulador">
+ <div class="wrap">
+  <div class="sec-h reveal"><span class="eyebrow">Simulador</span><h2>Quanto você <span class="g">economiza</span> saindo da gasolina?</h2><p>Mexa nos controles e veja a diferença na hora.</p></div>
+  <div class="sim-grid reveal">
+   <div class="panel">
+    <div class="fld"><label>Quantos km você roda por dia <b><span id="kmV">40</span> km</b></label><input type="range" id="km" min="5" max="150" step="5" value="40"></div>
+    <div class="fld"><label>Dias rodados por mês <b><span id="diasV">26</span> dias</b></label><input type="range" id="dias" min="5" max="30" step="1" value="26"></div>
+    <div class="fld"><label>Preço da gasolina <b>R$ <span id="gasV">6,30</span>/L</b></label><input type="range" id="gas" min="4" max="9" step="0.05" value="6.3"></div>
+    <div class="fld"><label>Consumo da sua moto atual <b><span id="kmlV">35</span> km/L</b></label><input type="range" id="kml" min="15" max="50" step="1" value="35"></div>
+    <div class="fld" style="margin-bottom:0"><label>Tarifa de energia <b>R$ <span id="kwhV">0,95</span>/kWh</b></label><input type="range" id="kwh" min="0.5" max="1.5" step="0.01" value="0.95"></div>
+   </div>
+   <div class="panel">
+    <div class="cmpbar"><div><span>⛽ Gasolina / mês</span><b id="rGas">R$ 0</b></div><div class="track"><i class="t-gas" id="bGas"></i></div></div>
+    <div class="cmpbar"><div><span>⚡ Elétrica / mês</span><b id="rEle">R$ 0</b></div><div class="track"><i class="t-ele" id="bEle"></i></div></div>
+    <div class="big-eco"><small>Você economiza por mês</small><strong id="rEco">R$ 0</strong><p>Em 12 meses: <b id="rAno" class="g">R$ 0</b></p><a class="btn btn-g sm" id="simCta" target="_blank" rel="noopener" href="#">Quero economizar assim</a></div>
+    <p class="note">Estimativa considerando consumo médio de 4 kWh a cada 100 km. O resultado real varia conforme o modelo, o trânsito e a forma de pilotar.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="quiz">
+ <div class="wrap">
+  <div class="sec-h reveal"><span class="eyebrow">Descubra a sua</span><h2>Qual moto é <span class="g">a sua cara?</span></h2><p>Responda 3 perguntas rápidas e a gente indica o modelo ideal.</p></div>
+  <div class="panel q-box reveal" id="quizBox"></div>
+ </div>
+</section>
+
+<section id="vantagens">
+ <div class="wrap">
+  <div class="sec-h reveal"><span class="eyebrow">Por que elétrica</span><h2>Mais <span class="g">economia</span>, menos dor de cabeça</h2></div>
+  <div class="ben">
+   <div class="b tilt reveal"><div class="ic">💸</div><h3>Custo por km baixíssimo</h3><p>Recarregar na tomada custa uma fração do que você gasta abastecendo.</p></div>
+   <div class="b tilt reveal"><div class="ic">🔧</div><h3>Manutenção simples</h3><p>Sem troca de óleo, sem filtro, sem vela e com menos peças em desgaste.</p></div>
+   <div class="b tilt reveal"><div class="ic">🤫</div><h3>Silêncio total</h3><p>Pilotagem suave, sem barulho de motor e sem fumaça.</p></div>
+   <div class="b tilt reveal"><div class="ic">🔌</div><h3>Recarga em casa</h3><p>Chegou, plugou, pronto. Acorde com a bateria cheia todos os dias.</p></div>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="sec-h reveal"><span class="eyebrow">Como funciona</span><h2>Do clique à <span class="g">sua garagem</span></h2></div>
+  <div class="steps">
+   <div class="step reveal"><h3>Escolha o modelo</h3><p>Navegue pelo catálogo, escolha a cor e compare as opções.</p></div>
+   <div class="step reveal"><h3>Chame no WhatsApp</h3><p>Tire dúvidas, veja condições de pagamento e disponibilidade.</p></div>
+   <div class="step reveal"><h3>Receba e acelere</h3><p>Combine a entrega, receba sua VoltGo e saia da gasolina.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="faq">
+ <div class="wrap">
+  <div class="sec-h reveal"><span class="eyebrow">Dúvidas</span><h2>Perguntas <span class="g">frequentes</span></h2></div>
+  <div class="faq reveal">
+   <details><summary>Preciso de habilitação ou emplacamento?</summary><p>Depende do modelo. As elétricas se enquadram em categorias diferentes (bicicleta elétrica, ciclomotor ou motocicleta) conforme potência e velocidade, seguindo as regras do CONTRAN. Antes de fechar, a gente explica o que vale para o modelo que você escolheu.</p></details>
+   <details><summary>Quanto tempo leva a recarga?</summary><p>Em tomada comum, em geral de 5 a 8 horas, dependendo da bateria do modelo. Dá para carregar à noite e sair com tudo cheio de manhã.</p></details>
+   <details><summary>A autonomia é a mesma que aparece no site?</summary><p>Os números são de referência. Na prática varia com o peso, o relevo, a velocidade e o estilo de pilotagem.</p></details>
+   <details><summary>Como funcionam garantia e assistência?</summary><p>As condições variam por modelo. Passamos tudo por escrito, antes da compra, no atendimento.</p></details>
+   <details><summary>Quais as formas de pagamento?</summary><p>Conversamos sobre as condições disponíveis direto no WhatsApp, de acordo com o modelo escolhido.</p></details>
+   <details><summary>Vocês entregam na minha cidade?</summary><p>Fale com a gente pelo WhatsApp que consultamos a entrega para o seu endereço.</p></details>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <div class="lead-box reveal">
+   <div><span class="eyebrow">Atendimento rápido</span><h2>Bora tirar a sua <span class="g">do papel?</span></h2><p>Deixe seu contato e o modelo que te interessa. Abrimos o WhatsApp já com a sua mensagem pronta.</p></div>
+   <form id="leadForm" novalidate>
+    <input type="text" id="lName" placeholder="Seu nome" autocomplete="name" required>
+    <input type="tel" id="lPhone" placeholder="Seu WhatsApp (com DDD)" autocomplete="tel" required>
+    <select id="lModel" aria-label="Modelo de interesse"></select>
+    <button class="btn btn-g" type="submit">Chamar no WhatsApp ⚡</button>
+   </form>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="f-grid">
+   <div class="f-col"><a href="#topo" class="logo" id="logoFoot" aria-label="VoltGo"></a><p style="max-width:260px;margin-top:8px">Motos elétricas para quem quer andar mais e gastar menos.</p></div>
+   <div class="f-col"><b>Navegue</b><a href="#motos">Motos</a><a href="#simulador">Simulador</a><a href="#quiz">Qual é a minha?</a><a href="#faq">Dúvidas</a></div>
+   <div class="f-col"><b>Contato</b><a id="waFoot" target="_blank" rel="noopener" href="#">WhatsApp (98) 99169-5028</a><a id="igFoot" target="_blank" rel="noopener" href="#" hidden>Instagram</a></div>
+  </div>
+  <p class="legal">© <span id="year"></span> VoltGo Motos Elétricas. Imagens ilustrativas. Valores, cores e especificações sujeitos a alteração sem aviso prévio.</p>
+ </div>
+</footer>
+
+<div class="tray" id="tray"><span id="trayTxt"></span><button class="btn btn-g sm" id="trayGo">Comparar</button><button class="x" id="trayClr">Limpar</button></div>
+<div class="wa-float" id="waFloat"><span>Fale com a gente 👋</span><a id="waFab" target="_blank" rel="noopener" href="#" aria-label="Chamar no WhatsApp"><svg viewBox="0 0 32 32" fill="#fff"><path d="M16.04 3C9.4 3 4 8.38 4 15c0 2.3.65 4.45 1.78 6.28L4 29l7.9-1.74A12 12 0 0 0 16.04 27C22.66 27 28 21.62 28 15S22.66 3 16.04 3Zm0 21.9c-1.8 0-3.47-.5-4.9-1.37l-.35-.2-4.7 1.03 1.07-4.57-.23-.37A9.8 9.8 0 0 1 6.2 15c0-5.42 4.42-9.82 9.84-9.82 5.4 0 9.8 4.4 9.8 9.82 0 5.4-4.4 9.9-9.8 9.9Zm5.4-7.36c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.45.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.08 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35Z"/></svg></a></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+ <div class="m-back" data-close></div>
+ <div class="m-box"><button class="m-x" id="mclose" data-close aria-label="Fechar">✕</button><div id="mbody"></div></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ============ CONFIGURAÇÃO (edite aqui) ============ */
+var CONFIG={
+  whatsapp:'5598991695028',     // DDI + DDD + número
+  instagram:'',                  // ex.: 'voltgo.motos' (deixe vazio para esconder)
+  firebase:null                  // cole o objeto firebaseConfig para salvar leads no Firestore (opcional)
+};
+var COR={verde:['Verde Neon','#39ff14'],preto:['Preto Carbono','#23262a'],branco:['Branco Pérola','#eef1ef'],vermelho:['Vermelho Racing','#e11d2e'],azul:['Azul Elétrico','#2f6bff'],cinza:['Cinza Titânio','#7b8591'],laranja:['Laranja Solar','#ff7a1a']};
+function cols(){return Array.prototype.map.call(arguments,function(k){return{nome:COR[k][0],hex:COR[k][1]}})}
+
+/* Catálogo de DEMONSTRAÇÃO: troque nomes, preços (já com sua margem) e especificações pelos reais dos parceiros. */
+var MOTOS=[
+ {id:'mini800',nome:'VoltGo Mini 800',cat:'Econômica',tag:'Custo-benefício',tipo:'scooter',preco:5490,pot:800,vel:40,aut:45,bat:'48V 20Ah',carga:'5 a 7 h',peso:'55 kg',maxcarga:'120 kg',freio:'Disco + tambor',resumo:'A porta de entrada para sair da gasolina. Leve, ágil e perfeita para o dia a dia.',cores:cols('verde','preto','branco','azul')},
+ {id:'city1000',nome:'VoltGo City 1000',cat:'Urbana',tag:'Novidade',tipo:'scooter',preco:7990,pot:1000,vel:45,aut:60,bat:'60V 20Ah',carga:'6 a 8 h',peso:'68 kg',maxcarga:'150 kg',freio:'Disco + CBS',resumo:'Equilíbrio entre preço, autonomia e conforto para rodar pela cidade toda.',cores:cols('verde','preto','branco','vermelho','cinza')},
+ {id:'delivery2000',nome:'VoltGo Delivery 2000',cat:'Delivery',tag:'Para apps',tipo:'scooter',preco:11490,pot:2000,vel:55,aut:80,bat:'72V 30Ah',carga:'6 a 8 h',peso:'84 kg',maxcarga:'180 kg',freio:'Disco duplo + CBS',resumo:'Feita para quem vive de entregas: autonomia de sobra e custo por km mínimo.',cores:cols('verde','preto','branco','laranja')},
+ {id:'cargo2500',nome:'VoltGo Cargo 2500',cat:'Delivery',tag:'Baú incluso',tipo:'cargo',preco:13490,pot:2500,vel:55,aut:90,bat:'72V 40Ah',carga:'7 a 9 h',peso:'96 kg',maxcarga:'200 kg',freio:'Disco duplo + CBS',resumo:'Com baú traseiro e bateria reforçada para turnos longos de trabalho.',cores:cols('verde','preto','branco','azul')},
+ {id:'max3000',nome:'VoltGo Max 3000',cat:'Premium',tag:'Premium',tipo:'scooter',preco:15900,pot:3000,vel:70,aut:100,bat:'72V 50Ah',carga:'8 a 10 h',peso:'102 kg',maxcarga:'200 kg',freio:'Disco duplo + ABS',resumo:'Potência, conforto e acabamento premium para quem quer o melhor da linha urbana.',cores:cols('verde','preto','branco','vermelho','cinza')},
+ {id:'sport4000',nome:'VoltGo Sport 4000',cat:'Premium',tag:'Top de linha',tipo:'sport',preco:19900,pot:4000,vel:85,aut:120,bat:'72V 60Ah',carga:'8 a 10 h',peso:'118 kg',maxcarga:'220 kg',freio:'Disco duplo + ABS',resumo:'A mais rápida e esportiva. Arrancada forte, visual agressivo e autonomia longa.',cores:cols('verde','preto','vermelho','azul')}
+];
+
+/* ============ HELPERS ============ */
+var $=function(s,r){return(r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var brl=function(n){return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(n)};
+var num=function(n,d){return Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d||0,maximumFractionDigits:d||0})};
+var wa=function(msg){return 'https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent(msg)};
+var byId=function(id){return MOTOS.filter(function(m){return m.id===id})[0]};
+var store={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+var fine=false;try{fine=!!(window.matchMedia&&matchMedia('(pointer:fine)').matches)}catch(e){}
+var uid=0;
+var toastT;
+function toast(t){var el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('show')},2600)}
+function countTo(el,to,dur,fmt){
+  fmt=fmt||brl;dur=dur||700;var from=el._v||0;el._v=to;
+  if(!window.requestAnimationFrame){el.textContent=fmt(to);return}
+  var t0=performance.now();
+  (function f(t){var p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=fmt(from+(to-from)*e);if(p<1)requestAnimationFrame(f)})(t0);
+}
+
+/* ============ LOGO ============ */
+function logoMark(){
+  uid++;
+  return '<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="lm'+uid+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b6ff3b"/><stop offset="1" stop-color="#00ff1a"/></linearGradient></defs>'+
+  '<path d="M50 10a40 40 0 1 0 40 40" fill="none" stroke="url(#lm'+uid+')" stroke-width="5" stroke-linecap="round" stroke-dasharray="150 40"/>'+
+  '<path d="M16 22h16l20 38 8-14 6 3-14 31h-6z" fill="#fff"/>'+
+  '<path d="M82 6 55 40h14L46 92l40-50H70z" fill="url(#lm'+uid+')"/></svg>';
+}
+function logoHTML(){return logoMark()+'<b>Volt<i>Go</i></b>'}
+
+/* ============ MOTO SVG ============ */
+function bikeSVG(m,color){
+  var i=++uid,c=color||m.cores[0].hex,a='#39ff14';
+  function wheel(cx){return '<g><circle cx="'+cx+'" cy="178" r="41" fill="#0a0a0b" stroke="#1d1f21" stroke-width="9"/><circle cx="'+cx+'" cy="178" r="32" fill="none" stroke="#2b2e30" stroke-width="1.5"/><g class="wheel"><circle cx="'+cx+'" cy="178" r="22" fill="#141618" stroke="'+a+'" stroke-width="3"/><path d="M'+(cx-22)+' 178H'+(cx+22)+'M'+cx+' 156V200M'+(cx-15.5)+' 162.5L'+(cx+15.5)+' 193.5M'+(cx+15.5)+' 162.5L'+(cx-15.5)+' 193.5" stroke="#8a9490" stroke-width="2"/></g><circle cx="'+cx+'" cy="178" r="5" fill="#cfd6d2"/></g>'}
+  var box=m.tipo==='cargo'?'<g><rect x="12" y="60" width="96" height="60" rx="9" fill="#101213" stroke="'+c+'" stroke-width="2.5"/><path d="M26 76h68" stroke="'+c+'" stroke-width="2" opacity=".5"/><text x="60" y="104" text-anchor="middle" font-family="Kanit,sans-serif" font-style="italic" font-weight="800" font-size="19" fill="'+a+'">VoltGo</text></g>':'';
+  var stripe=m.tipo==='sport'?'<path d="M62 140L206 124" stroke="#fff" stroke-width="3" opacity=".55"/><path d="M270 100l36 34" stroke="#fff" stroke-width="3" opacity=".4"/>':'';
+  return '<svg viewBox="0 0 400 240" role="img" aria-label="'+m.nome+'"><defs>'+
+   '<linearGradient id="g'+i+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient>'+
+   '<linearGradient id="b'+i+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'+
+   '<path id="rb'+i+'" d="M50 160C46 116 92 94 150 96L206 100L216 152L150 160Z"/>'+
+   '<path id="sh'+i+'" d="M282 164L266 72C266 66 270 63 276 62L294 60C300 60 303 63 305 69L322 150Z"/></defs>'+
+   '<ellipse cx="200" cy="224" rx="150" ry="9" fill="rgba(0,0,0,.55)"/>'+
+   '<path d="M150 158L92 178" stroke="#3a3d3f" stroke-width="8" stroke-linecap="round"/>'+
+   '<path d="M298 108L312 178" stroke="#9aa39f" stroke-width="7" stroke-linecap="round"/>'+
+   wheel(90)+wheel(312)+
+   '<path d="M206 152L288 154L294 168L212 168Z" fill="#1a1c1e" stroke="#2c2f31"/>'+
+   '<use href="#rb'+i+'" fill="'+c+'"/><use href="#rb'+i+'" fill="url(#g'+i+')" stroke="rgba(255,255,255,.18)"/>'+
+   '<path d="M62 92C92 76 160 76 198 90L204 100L58 100Z" fill="#17191a" stroke="#2c2f31"/>'+
+   '<use href="#sh'+i+'" fill="'+c+'"/><use href="#sh'+i+'" fill="url(#g'+i+')" stroke="rgba(255,255,255,.18)"/>'+
+   stripe+box+
+   '<path d="M142 112L124 140H138L130 160L160 128H145L154 112Z" fill="'+a+'" opacity=".95"/>'+
+   '<path d="M266 64L296 50L322 54" stroke="#d9dedb" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="324" cy="54" r="5" fill="#222"/>'+
+   '<rect x="44" y="122" width="8" height="16" rx="3" fill="#ff2d3b"/>'+
+   '<path class="beam" d="M318 76L400 36V134L318 92Z" fill="url(#b'+i+')" opacity="0"/>'+
+   '<ellipse cx="312" cy="84" rx="7" ry="11" fill="#fff"/></svg>';
+}
+
+/* ============ HEADER, FOOTER, LINKS ============ */
+$('#logoTop').innerHTML=logoHTML();$('#logoFoot').innerHTML=logoHTML();
+var waBase=wa('Olá! Vim pelo site da VoltGo e quero saber mais sobre as motos elétricas.');
+['waHeader','waFab','waFoot'].forEach(function(id){$('#'+id).href=waBase});
+if(CONFIG.instagram){var ig=$('#igFoot');ig.hidden=false;ig.href='https://instagram.com/'+CONFIG.instagram;ig.textContent='Instagram @'+CONFIG.instagram}
+$('#year').textContent=new Date().getFullYear();
+$('#tick').innerHTML=(function(){var s='<span>ZERO GASOLINA</span><span>⚡</span><span>ZERO ÓLEO</span><span>⚡</span><span>RECARGA NA TOMADA</span><span>⚡</span><span>SILÊNCIO TOTAL</span><span>⚡</span><span>LIGOU, ANDOU</span><span>⚡</span>';return s+s})();
+$('#burger').addEventListener('click',function(){$('#nav').classList.toggle('open')});
+$$('#nav a').forEach(function(a){a.addEventListener('click',function(){$('#nav').classList.remove('open')})});
+
+/* ============ HERO ============ */
+var hero=byId('max3000');
+function setHero(hex){$('#heroSvg').innerHTML=bikeSVG(hero,hex)}
+setHero(COR.verde[1]);
+$('#heroDots').innerHTML=hero.cores.map(function(c,k){return '<button class="dot '+(k?'':'on')+'" style="--c:'+c.hex+'" data-hex="'+c.hex+'" aria-label="'+c.nome+'"></button>'}).join('');
+$('#heroDots').addEventListener('click',function(e){var d=e.target.closest('.dot');if(!d)return;$$('#heroDots .dot').forEach(function(x){x.classList.remove('on')});d.classList.add('on');setHero(d.dataset.hex)});
+var powered=false;
+$('#power').addEventListener('click',function(){
+  powered=!powered;$('#stage').classList.toggle('on',powered);
+  $('#power span').textContent=powered?'Desligar':'Ligar a moto';
+  countTo($('#speed'),powered?hero.vel:0,1400,function(n){return String(Math.round(n))});
+  toast(powered?'⚡ Ligada! Zero ruído, zero fumaça.':'Moto desligada.');
+});
+
+/* ============ CATÁLOGO ============ */
+var grid=$('#grid'),filter='Todas',sort='rel';
+var favs=store.get('voltgo_favs',[]).filter(byId);
+var cmp=[];
+var pick={}; /* cor escolhida por modelo (índice) */
+function col(m){return m.cores[pick[m.id]||0].hex}
+function colName(m){return m.cores[pick[m.id]||0].nome}
+function cardHTML(m,i){
+  var f=favs.indexOf(m.id)>-1,c=cmp.indexOf(m.id)>-1,pi=pick[m.id]||0;
+  return '<article class="card" data-id="'+m.id+'" style="animation-delay:'+(i*70)+'ms">'+
+  '<div class="c-top"><span class="badge">'+m.tag+'</span><button class="fav'+(f?' on':'')+'" data-act="fav" aria-label="Favoritar '+m.nome+'">♥</button></div>'+
+  '<div class="c-img" data-act="open">'+bikeSVG(m,m.cores[pi].hex)+'</div>'+
+  '<div class="c-sw" aria-label="Escolha a cor">'+m.cores.map(function(c,i){return '<button class="sw'+(i===pi?' on':'')+'" data-act="sw" data-i="'+i+'" style="--c:'+c.hex+'" aria-label="Cor '+c.nome+'" title="'+c.nome+'"></button>'}).join('')+'<span class="c-cn">'+m.cores[pi].nome+'</span></div>'+
+  '<div class="c-body"><span class="cat">'+m.cat+'</span><h3>'+m.nome+'</h3><p class="desc">'+m.resumo+'</p>'+
+  '<ul class="mini"><li><b>'+m.aut+'</b>km</li><li><b>'+m.vel+'</b>km/h</li><li><b>'+num(m.pot)+'</b>W</li></ul>'+
+  '<div class="c-price"><small>a partir de</small><strong>'+brl(m.preco)+'</strong></div>'+
+  '<div class="c-actions"><button class="btn btn-g sm" data-act="open">Ver detalhes</button><label class="cmp"><input type="checkbox" data-act="cmp"'+(c?' checked':'')+'><span>Comparar</span></label></div></div></article>';
+}
+function applyPick(id,i){
+  var m=byId(id);if(!m)return;pick[id]=i;
+  $$('.card').forEach(function(card){
+    if(card.dataset.id!==id)return;
+    $('.c-img',card).innerHTML=bikeSVG(m,m.cores[i].hex);
+    $$('.sw',card).forEach(function(b){b.classList.toggle('on',+b.dataset.i===i)});
+    $('.c-cn',card).textContent=m.cores[i].nome;
+  });
+}
+function renderChips(){
+  var cats=['Todas'].concat(MOTOS.map(function(m){return m.cat}).filter(function(v,i,a){return a.indexOf(v)===i}));
+  $('#chips').innerHTML=cats.map(function(c){return '<button class="chip'+(c===filter?' on':'')+'" data-cat="'+c+'">'+c+'</button>'}).join('');
+}
+function listMotos(){
+  var l=MOTOS.filter(function(m){return filter==='Todas'||m.cat===filter});
+  if(sort==='menor')l=l.slice().sort(function(a,b){return a.preco-b.preco});
+  if(sort==='maior')l=l.slice().sort(function(a,b){return b.preco-a.preco});
+  return l;
+}
+function bindTilt(root){
+  if(!fine)return;
+  $$('.card,.tilt',root).forEach(function(el){
+    el.addEventListener('mousemove',function(e){var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;el.style.setProperty('--mx',x*100+'%');el.style.setProperty('--my',y*100+'%');el.style.transform='perspective(900px) rotateX('+((.5-y)*5)+'deg) rotateY('+((x-.5)*7)+'deg) translateY(-4px)'});
+    el.addEventListener('mouseleave',function(){el.style.transform=''});
+  });
+}
+function renderGrid(){grid.innerHTML=listMotos().map(cardHTML).join('');bindTilt(grid)}
+renderChips();renderGrid();
+$('#chips').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;filter=b.dataset.cat;renderChips();renderGrid()});
+$('#sort').addEventListener('change',function(e){sort=e.target.value;renderGrid()});
+grid.addEventListener('click',function(e){
+  var t=e.target.closest('[data-act]');if(!t)return;
+  var card=t.closest('.card'),id=card.dataset.id,a=t.dataset.act;
+  if(a==='open')openMoto(id);
+  else if(a==='fav')toggleFav(id);
+  else if(a==='cmp'){if(!toggleCmp(id))e.preventDefault()}
+  else if(a==='sw')applyPick(id,+t.dataset.i);
+});
+
+/* favoritos */
+function updateFavUI(){
+  var n=favs.length,em=$('#favCount');em.textContent=n;em.classList.toggle('show',n>0);
+  $$('.card').forEach(function(c){var b=$('.fav',c);if(b)b.classList.toggle('on',favs.indexOf(c.dataset.id)>-1)});
+}
+function toggleFav(id){
+  var k=favs.indexOf(id);
+  if(k>-1){favs.splice(k,1);toast('Removida dos favoritos')}else{favs.push(id);toast('♥ '+byId(id).nome+' nos favoritos')}
+  store.set('voltgo_favs',favs);updateFavUI();
+  if($('#favList'))renderFavList();
+  return favs.indexOf(id)>-1;
+}
+updateFavUI();
+
+/* comparar */
+function syncCmp(){
+  $$('.card').forEach(function(c){var i=$('input[data-act=cmp]',c);if(i)i.checked=cmp.indexOf(c.dataset.id)>-1});
+  var tr=$('#tray');tr.classList.toggle('show',cmp.length>0);
+  $('#trayTxt').textContent=cmp.length+' de 3 selecionadas';
+  $('#trayGo').disabled=cmp.length<2;$('#trayGo').style.opacity=cmp.length<2?.5:1;
+}
+function toggleCmp(id){
+  var k=cmp.indexOf(id);
+  if(k>-1)cmp.splice(k,1);
+  else{if(cmp.length>=3){toast('Você pode comparar até 3 modelos.');return false}cmp.push(id)}
+  syncCmp();return true;
+}
+$('#trayClr').addEventListener('click',function(){cmp=[];syncCmp()});
+$('#trayGo').addEventListener('click',function(){if(cmp.length<2){toast('Escolha pelo menos 2 modelos.');return}openCompare()});
+
+/* ============ MODAL ============ */
+var modal=$('#modal'),lastFocus=null;
+function openModal(html){lastFocus=document.activeElement;$('#mbody').innerHTML=html;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('lock');$('#mclose').focus()}
+function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('lock');$('#mbody').innerHTML='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+modal.addEventListener('click',function(e){if(e.target.hasAttribute('data-close')||e.target.closest('#mclose'))closeModal()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeModal()});
+
+function openMoto(id){
+  var m=byId(id);if(!m)return;
+  var p=pick[id]||0;
+  var bar=function(l,v,max,u){return '<div class="bar"><span>'+l+'</span><div><i data-w="'+Math.min(100,v/max*100)+'"></i></div><b>'+num(v)+' '+u+'</b></div>'};
+  var msg=function(ci){return wa('Olá! Tenho interesse na '+m.nome+' na cor '+m.cores[ci].nome+'. Pode me passar valores e disponibilidade?')};
+  openModal('<div class="d-grid"><div class="d-left"><div class="d-stage"><div id="dSvg">'+bikeSVG(m,m.cores[p].hex)+'</div></div>'+
+   '<div class="swatches" id="sw">'+m.cores.map(function(c,i){return '<button class="sw'+(i===p?' on':'')+'" data-i="'+i+'" style="--c:'+c.hex+'" aria-label="'+c.nome+'"></button>'}).join('')+'</div><p class="cor-nome" id="corNome">'+m.cores[p].nome+'</p></div>'+
+   '<div class="d-right"><span class="badge">'+m.tag+'</span><h2>'+m.nome+'</h2><div class="d-price"><small>a partir de</small><strong>'+brl(m.preco)+'</strong></div><p>'+m.resumo+'</p>'+
+   '<div class="bars">'+bar('Autonomia',m.aut,130,'km')+bar('Velocidade',m.vel,90,'km/h')+bar('Potência',m.pot,4500,'W')+'</div>'+
+   '<dl class="spec"><div><dt>Bateria</dt><dd>'+m.bat+'</dd></div><div><dt>Recarga</dt><dd>'+m.carga+'</dd></div><div><dt>Peso</dt><dd>'+m.peso+'</dd></div><div><dt>Carga máx.</dt><dd>'+m.maxcarga+'</dd></div><div><dt>Freios</dt><dd>'+m.freio+'</dd></div><div><dt>Categoria</dt><dd>'+m.cat+'</dd></div></dl>'+
+   '<div class="d-cta"><a id="dWa" class="btn btn-g" target="_blank" rel="noopener" href="'+msg(p)+'">Quero essa no WhatsApp</a><button class="btn btn-o" id="dFav">'+(favs.indexOf(id)>-1?'♥ Favoritada':'♡ Favoritar')+'</button></div></div></div>');
+  setTimeout(function(){$$('.bar i').forEach(function(i){i.style.width=i.dataset.w+'%'})},60);
+  $('#sw').addEventListener('click',function(e){
+    var b=e.target.closest('.sw');if(!b)return;var ci=+b.dataset.i;
+    $$('#sw .sw').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+    $('#dSvg').innerHTML=bikeSVG(m,m.cores[ci].hex);$('#corNome').textContent=m.cores[ci].nome;$('#dWa').href=msg(ci);applyPick(id,ci);
+  });
+  $('#dFav').addEventListener('click',function(){var on=toggleFav(id);this.textContent=on?'♥ Favoritada':'♡ Favoritar'});
+}
+
+function renderFavList(){
+  var box=$('#favList');if(!box)return;
+  box.innerHTML=favs.length?favs.map(function(id){var m=byId(id);return '<div class="list-item"><div>'+bikeSVG(m,col(m))+'</div><div><h4>'+m.nome+'</h4><small>'+brl(m.preco)+' • '+m.cat+'</small></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-g sm" data-open="'+id+'">Detalhes</button><button class="btn btn-o sm" data-rm="'+id+'">Remover</button></div></div>'}).join(''):'<p class="empty">Você ainda não favoritou nenhuma moto. Toque no ♥ dos cards para salvar aqui.</p>';
+}
+$('#favBtn').addEventListener('click',function(){
+  openModal('<h2 class="m-title">Meus <span class="g">favoritos</span></h2><div id="favList"></div>');renderFavList();
+  $('#favList').addEventListener('click',function(e){
+    var o=e.target.closest('[data-open]'),r=e.target.closest('[data-rm]');
+    if(o)openMoto(o.dataset.open);else if(r)toggleFav(r.dataset.rm);
+  });
+});
+
+function openCompare(){
+  var ms=cmp.map(byId);
+  var rows=[['Preço',function(m){return m.preco},brl,'min'],['Categoria',function(m){return m.cat}],['Potência',function(m){return m.pot},function(v){return num(v)+' W'},'max'],['Velocidade',function(m){return m.vel},function(v){return v+' km/h'},'max'],['Autonomia',function(m){return m.aut},function(v){return v+' km'},'max'],['Bateria',function(m){return m.bat}],['Recarga',function(m){return m.carga}],['Peso',function(m){return m.peso}],['Carga máx.',function(m){return m.maxcarga}],['Freios',function(m){return m.freio}]];
+  var html='<h2 class="m-title">Comparando <span class="g">modelos</span></h2><div class="cmp-wrap"><table><thead><tr><th></th>'+ms.map(function(m){return '<th>'+bikeSVG(m,col(m))+'<h4>'+m.nome+'</h4></th>'}).join('')+'</tr></thead><tbody>';
+  rows.forEach(function(r){
+    var vals=ms.map(r[1]),best=null;
+    if(r[3]){best=r[3]==='min'?Math.min.apply(null,vals):Math.max.apply(null,vals)}
+    html+='<tr><td>'+r[0]+'</td>'+vals.map(function(v){var show=r[2]?r[2](v):v;return '<td'+(best!==null&&v===best?' class="best"':'')+'>'+show+'</td>'}).join('')+'</tr>';
+  });
+  html+='<tr><td></td>'+ms.map(function(m){return '<td><a class="btn btn-g sm" target="_blank" rel="noopener" href="'+wa('Olá! Estava comparando modelos no site e tenho interesse na '+m.nome+' na cor '+colName(m)+'.')+'">WhatsApp</a></td>'}).join('')+'</tr></tbody></table></div><p class="note">Em verde: melhor valor em cada item numérico.</p>';
+  openModal(html);
+}
+
+/* ============ SIMULADOR ============ */
+function calc(){
+  var km=+$('#km').value,dias=+$('#dias').value,gas=+$('#gas').value,kml=+$('#kml').value,kwh=+$('#kwh').value;
+  $('#kmV').textContent=km;$('#diasV').textContent=dias;$('#gasV').textContent=num(gas,2);$('#kmlV').textContent=kml;$('#kwhV').textContent=num(kwh,2);
+  var kmMes=km*dias,g=kmMes/kml*gas,e=kmMes*0.04*kwh,eco=Math.max(0,g-e),mx=Math.max(g,e,1);
+  countTo($('#rGas'),g);countTo($('#rEle'),e);countTo($('#rEco'),eco);countTo($('#rAno'),eco*12);
+  $('#bGas').style.width=(g/mx*100)+'%';$('#bEle').style.width=(e/mx*100)+'%';
+  $('#simCta').href=wa('Olá! Fiz a simulação no site: rodando '+km+' km por dia, posso economizar cerca de '+brl(eco)+' por mês. Quero conhecer os modelos!');
+}
+['km','dias','gas','kml','kwh'].forEach(function(id){$('#'+id).addEventListener('input',calc)});
+calc();
+
+/* ============ QUIZ ============ */
+var QUIZ=[
+ {q:'Como você vai usar a moto?',k:'uso',o:[['app','🛵 Trabalho, entregas e apps'],['dia','🏙️ Dia a dia na cidade'],['perf','🔥 Performance e estilo']]},
+ {q:'Quantos km você roda por dia?',k:'dist',o:[['a','Até 30 km'],['b','De 30 a 55 km'],['c','Mais de 55 km']]},
+ {q:'Qual o seu orçamento?',k:'orc',o:[['a','Até R$ 8 mil'],['b','Até R$ 14 mil'],['c','Acima de R$ 14 mil']]}
+];
+var qStep=0,qAns={};
+function scoreMoto(m){
+  var s=0,u=qAns.uso,d=qAns.dist,o=qAns.orc;
+  if(u==='app')s+=m.cat==='Delivery'?4:0;
+  if(u==='dia')s+=(m.cat==='Urbana'||m.cat==='Econômica')?3:0;
+  if(u==='perf')s+=m.cat==='Premium'?3:0,s+=m.tipo==='sport'?1:0;
+  var need={a:30,b:55,c:80}[d];s+=m.aut>=need?2:-4;
+  var lim={a:8000,b:14000,c:1e9}[o];s+=m.preco<=lim?2:-3;
+  if(o==='c'&&m.preco>=13000)s+=1;
+  return s;
+}
+function renderQuiz(){
+  var box=$('#quizBox');
+  if(qStep>=QUIZ.length){
+    var best=MOTOS.slice().sort(function(a,b){return scoreMoto(b)-scoreMoto(a)})[0];
+    box.innerHTML='<div class="q-res"><span class="eyebrow">Sua moto ideal</span>'+bikeSVG(best)+'<h3>'+best.nome+'</h3><p>'+best.resumo+' A partir de <b class="g">'+brl(best.preco)+'</b>.</p><div class="row"><button class="btn btn-g" data-q="open">Ver detalhes</button><a class="btn btn-o" target="_blank" rel="noopener" href="'+wa('Olá! Fiz o quiz no site e a moto indicada foi a '+best.nome+'. Pode me passar mais informações?')+'">Falar no WhatsApp</a></div><button class="link" data-q="again">Refazer o quiz</button></div>';
+    box.dataset.best=best.id;return;
+  }
+  var q=QUIZ[qStep];
+  box.innerHTML='<div class="q-prog">'+QUIZ.map(function(_,i){return '<i class="'+(i<=qStep?'on':'')+'"></i>'}).join('')+'</div><h3>'+q.q+'</h3><div class="q-opts">'+q.o.map(function(o){return '<button class="q-opt" data-v="'+o[0]+'">'+o[1]+'</button>'}).join('')+'</div>'+(qStep?'<button class="link" data-q="back">← Voltar</button>':'');
+}
+$('#quizBox').addEventListener('click',function(e){
+  var o=e.target.closest('.q-opt'),a=e.target.closest('[data-q]');
+  if(o){qAns[QUIZ[qStep].k]=o.dataset.v;qStep++;renderQuiz()}
+  else if(a){var k=a.dataset.q;if(k==='back'){qStep--;renderQuiz()}else if(k==='again'){qStep=0;qAns={};renderQuiz()}else if(k==='open')openMoto(this.dataset.best)}
+});
+renderQuiz();
+
+/* ============ LEADS ============ */
+$('#lModel').innerHTML='<option value="">Modelo de interesse</option>'+MOTOS.map(function(m){return '<option value="'+m.nome+'">'+m.nome+'</option>'}).join('')+'<option value="Ainda não sei">Ainda não sei</option>';
+function saveLead(l){
+  var all=store.get('voltgo_leads',[]);all.push(l);store.set('voltgo_leads',all);
+  if(CONFIG.firebase){
+    try{
+      Promise.all([import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js')]).then(function(r){
+        var app=r[0].initializeApp(CONFIG.firebase),db=r[1].getFirestore(app);
+        return r[1].addDoc(r[1].collection(db,'leads'),l);
+      }).catch(function(){});
+    }catch(e){}
+  }
+}
+$('#leadForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var n=$('#lName').value.trim(),p=$('#lPhone').value.replace(/\D/g,''),m=$('#lModel').value||'Ainda não sei';
+  if(n.length<2){toast('Informe seu nome.');$('#lName').focus();return}
+  if(p.length<10){toast('Informe seu WhatsApp com DDD.');$('#lPhone').focus();return}
+  saveLead({nome:n,telefone:p,modelo:m,data:new Date().toISOString()});
+  toast('Pronto! Abrindo o WhatsApp… ⚡');
+  window.open(wa('Olá! Meu nome é '+n+' e tenho interesse na '+m+'. Meu contato: '+$('#lPhone').value.trim()),'_blank');
+  this.reset();
+});
+
+/* ============ SCROLL, REVEAL, GLOW ============ */
+var hdr=$('#hdr'),prog=$('#progress'),ticking=false;
+function onScroll(){
+  var y=window.pageYOffset||0,h=document.documentElement.scrollHeight-window.innerHeight;
+  prog.style.width=(h>0?y/h*100:0)+'%';hdr.classList.toggle('scrolled',y>10);
+  ticking=false;
+}
+window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame?requestAnimationFrame(onScroll):onScroll()}},{passive:true});
+onScroll();
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}})},{threshold:.12});
+  $$('.reveal').forEach(function(el){io.observe(el)});
+}else{$$('.reveal').forEach(function(el){el.classList.add('in')})}
+bindTilt(document.body.querySelector('#vantagens'));
+if(fine){var gl=$('#glow');document.addEventListener('mousemove',function(e){gl.style.left=e.clientX+'px';gl.style.top=e.clientY+'px'},{passive:true})}
+setTimeout(function(){$('#waFloat').classList.add('tip')},4500);
+setTimeout(function(){$('#waFloat').classList.remove('tip')},10500);
+function hideLoader(){$('#loader').classList.add('hide')}
+if(document.readyState==='complete')setTimeout(hideLoader,500);else window.addEventListener('load',function(){setTimeout(hideLoader,500)});
+setTimeout(hideLoader,2500);
+})();
+</script>
+</body>
+</html>
